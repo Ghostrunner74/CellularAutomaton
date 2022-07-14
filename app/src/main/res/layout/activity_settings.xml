@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/editBlockSize"
+    android:id="@+id/Settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -19,17 +19,18 @@
         android:text="Save" />
 
     <LinearLayout
-        android:id="@+id/rulesBook"
+        android:id="@+id/ruleBook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"></LinearLayout>
 
     <Button
-        android:id="@+id/newRule"
+        android:id="@+id/addRule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rulesBook"
+        android:layout_below="@+id/ruleBook"
         android:layout_marginTop="0dp"
-        android:text="Add Rule" />
+        android:onClick="addNewRule"
+        android:text="New rule" />
 
 </RelativeLayout>

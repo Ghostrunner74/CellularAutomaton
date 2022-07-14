@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mainTable = (TableLayout) findViewById(R.id.mainTable);
         button = (Button) findViewById(R.id.settings);
 
-        editBlockSize = findViewById(R.id.editBlockSize);
+        editBlockSize = findViewById(R.id.Settings);
         editBlockSize.setText("100");
 
         editNumberOfStates = findViewById(R.id.editNumberOfStates);
