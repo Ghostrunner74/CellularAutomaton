@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +20,8 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private SharedPreferences def_pref;
 
     TableLayout mainTable;
     TableRow tr;
@@ -42,26 +46,25 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        init();
+
+    }
+
+    public void init() {
+
+        def_pref = PreferenceManager.getDefaultSharedPreferences(this);
+
         clrBtn = new Button(this);
 
         clrBtn = findViewById(R.id.clear);
         clrBtn.setEnabled(false);
 
-
         mainTable = (TableLayout) findViewById(R.id.mainTable);
-        button = (Button) findViewById(R.id.settings);
 
-        editBlockSize = findViewById(R.id.Settings);
-        editBlockSize.setText("100");
-
-        editNumberOfStates = findViewById(R.id.editNumberOfStates);
-        editNumberOfStates.setText("2");
-
-        blockSize = Integer. valueOf(String.valueOf(editBlockSize.getText()));
-        numberOfStates = Integer. valueOf(String.valueOf(editNumberOfStates.getText()));
+        blockSize =  Integer.valueOf(def_pref.getString("edit_blocksize","100"));
+        numberOfStates = Integer. valueOf(def_pref.getString("edit_numberofstates","2"));
 
         active = false;
-
     }
 
     @Override
@@ -75,25 +78,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.menu_rules) {
-            Toast.makeText(this,"Home menu clicked",Toast.LENGTH_SHORT).show();
+        if (id == R.id.menu_settings) {
+//            Toast.makeText(this,"Home menu clicked",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     public void reference() {
-        blockSize = Integer. valueOf(String.valueOf(editBlockSize.getText()));
-        numberOfStates = Integer. valueOf(String.valueOf(editNumberOfStates.getText()));
+        blockSize =  Integer.valueOf(def_pref.getString("edit_blocksize","100"));
+        numberOfStates = Integer. valueOf(def_pref.getString("edit_numberofstates","2"));
 
         rows = mainTable.getLayoutParams().height/blockSize;
         columns = mainTable.getLayoutParams().width/blockSize;
 
         btn = new Button[rows][columns];
-    }
-
-    public void openSettings(View v) {
-        openRules();
     }
 
     public void setRandom(View v) {
@@ -105,11 +106,7 @@ public class MainActivity extends AppCompatActivity {
         clearMainTable();
     }
 
-    private void openRules() {
-        Intent intent = new Intent(MainActivity.this, Settings.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
+
 
     private void initializeState() {
         mainTable.removeAllViews();
