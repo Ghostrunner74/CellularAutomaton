@@ -62,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
     public void reference() {
         blockSize = Integer. valueOf(String.valueOf(editBlockSize.getText()));
         numberOfStates = Integer. valueOf(String.valueOf(editNumberOfStates.getText()));
