@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Start activity in the background?
-
         setContentView(R.layout.activity_main);
 
         init();
@@ -81,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_settings) {
 //            Toast.makeText(this,"Home menu clicked",Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+            startActivity(intent);
+        }
+
+        if (id == R.id.menu_rules) {
+            Intent intent = new Intent(MainActivity.this,RulesActivity.class);
             startActivity(intent);
         }
 

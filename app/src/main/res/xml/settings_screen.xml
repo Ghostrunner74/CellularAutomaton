@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Preference category">
+    <PreferenceCategory
+        android:gravity="center"
+        android:textSize="24sp"
+        android:title="Game Settings">
 
         <EditTextPreference
             android:defaultValue="false"
@@ -9,11 +12,17 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Block Size" />
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="edit_numberofrules"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Number of Rules" />
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="edit_numberofstates"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Number of States" />
     </PreferenceCategory>
-    <EditTextPreference
-        android:defaultValue="Default value"
-        android:key="edit_numberofstates"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="Number of States" />
 </PreferenceScreen>

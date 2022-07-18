@@ -4,9 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/CellularAutomaton/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/Daniel/AndroidStudioProjects/CellularAutomaton/app/src/main/res/layout/activity_rules.xml" value="0.21196581196581196" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/CellularAutomaton/app/src/main/res/layout/activity_settings.xml" value="0.264" />
+        <entry key="..\:/Users/Daniel/AndroidStudioProjects/CellularAutomaton/app/src/main/res/layout/fragment_blank.xml" value="0.259375" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/CellularAutomaton/app/src/main/res/menu/main_menu.xml" value="0.25833333333333336" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/CellularAutomaton/app/src/main/res/xml/reference.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Daniel/AndroidStudioProjects/CellularAutomaton/app/src/main/res/xml/rules_screen.xml" value="0.12613981762917933" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/CellularAutomaton/app/src/main/res/xml/settings_screen.xml" value="0.264" />
       </map>
     </option>
