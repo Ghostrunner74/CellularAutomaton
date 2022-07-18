@@ -1,10 +1,13 @@
 package com.example.cellularautomaton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Start activity in the background?
 
         setContentView(R.layout.activity_main);
 
@@ -82,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openRules() {
-        Intent intent = new Intent(this, Settings.class);
+        Intent intent = new Intent(MainActivity.this, Settings.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
