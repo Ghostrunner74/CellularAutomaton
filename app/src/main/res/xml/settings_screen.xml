@@ -14,15 +14,15 @@
             android:title="Block Size" />
         <EditTextPreference
             android:defaultValue="Default value"
-            android:key="edit_numberofrules"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="Number of Rules" />
-        <EditTextPreference
-            android:defaultValue="Default value"
             android:key="edit_numberofstates"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Number of States" />
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="edit_numberofrules"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Number of Rules" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -5,14 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/addrule"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="newRule"
-        android:text="add Rule"
-        app:layout_constraintTop_toBottomOf="@+id/ruleBook" />
-
     <LinearLayout
         android:id="@+id/ruleBook"
         android:layout_width="match_parent"
