@@ -12,42 +12,9 @@
         android:onClick="newRule"
         android:text="New Rule"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ruleBook" />
-
-    <LinearLayout
-        android:id="@+id/ruleBook"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TableRow
-            android:id="@+id/trRule"
-            android:layout_width="match_parent"
-            android:layout_height="500dp">
-
-            <Button
-                android:id="@+id/prevState"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="----------------->" />
-
-            <Button
-                android:id="@+id/postState"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
-        </TableRow>
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/ruleBook" />
 
     <Button
         android:id="@+id/saveRules"
@@ -58,4 +25,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TableLayout
+        android:id="@+id/ruleBook"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,9 +7,11 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,11 +21,15 @@ import androidx.appcompat.app.AppCompatActivity;
 public class RulesActivity extends AppCompatActivity {
 
     private SharedPreferences def_pref;
-    LinearLayout ruleBook;
-    Button[] rule;
-    TableRow[] trRule;
+    TableLayout ruleBook;
+    TableRow trRule;
+
+    Button[] prevState;
+    Button[] postState;
+    TextView support;
 
     int clickCounter;
+    int buttonSize;
     Intent main;
 
     @Override
@@ -32,24 +38,44 @@ public class RulesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rules);
         setTitle("Rules");
-        int numberofrules = Integer.valueOf(def_pref.getString("edit_numberofrules","10"));
 
         main = new Intent(RulesActivity.this, MainActivity.class);
 
         ruleBook = findViewById(R.id.ruleBook);
-        trRule = new TableRow[numberofrules];
+        int numberofrules = Integer.valueOf(def_pref.getString("edit_numberofrules","10"));
 
-        for(int i = 0; i < numberofrules; i++) {
-            trRule[i] = findViewById(R.id.trRule);
-        }
+        prevState = new Button[numberofrules];
+        postState = new Button[numberofrules];
 
+        buttonSize = 150;
         clickCounter = 0;
 
     }
 
     public void newRule(View v) {
-        trRule[clickCounter] = new TableRow(this);
-        ruleBook.addView(trRule[clickCounter]);
+        trRule = new TableRow(this);
+        ruleBook.addView(trRule);
+
+        prevState[clickCounter] = new Button(this);
+        trRule.addView(prevState[clickCounter]);
+
+        LinearLayout.LayoutParams prevParams = (LinearLayout.LayoutParams) prevState[clickCounter].getLayoutParams();
+        prevParams.width = buttonSize;
+        prevParams.height = buttonSize;
+        prevState[clickCounter].setLayoutParams(prevParams);
+
+        support = new TextView(this);
+        support.setText(" ----------------> ");
+        trRule.addView(support);
+
+        postState[clickCounter] = new Button(this);
+        trRule.addView(postState[clickCounter]);
+
+        LinearLayout.LayoutParams postParams = (LinearLayout.LayoutParams) postState[clickCounter].getLayoutParams();
+        postParams.width = buttonSize;
+        postParams.height = buttonSize;
+        postState[clickCounter].setLayoutParams(postParams);
+
         clickCounter++;
     }
 
