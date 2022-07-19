@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Button[][] btn;
     Button button;
     Button clrBtn;
+    Intent rules; //
 
     EditText editNumberOfStates;
     EditText editBlockSize;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.activity_main);
 
         init();
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     public void init() {
 
         def_pref = PreferenceManager.getDefaultSharedPreferences(this);
+        rules = new Intent(MainActivity.this,RulesActivity.class);
 
         clrBtn = new Button(this);
 
@@ -83,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.menu_rules) {
-            Intent intent = new Intent(MainActivity.this,RulesActivity.class);
-            startActivity(intent);
+            rules.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(rules);
         }
 
         return super.onOptionsItemSelected(item);

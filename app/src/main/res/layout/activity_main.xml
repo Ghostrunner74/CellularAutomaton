@@ -11,7 +11,7 @@
 
     <TableLayout
         android:id="@+id/mainTable"
-        android:layout_width="409dp"
+        android:layout_width="fill_parent"
         android:layout_height="410dp"
         android:background="#FFFFFF"
         android:clipToPadding="false"

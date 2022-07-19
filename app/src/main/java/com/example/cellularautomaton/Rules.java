@@ -18,7 +18,7 @@ public class Rules extends MainActivity{
         userClr[3] = R.color.purple_500;
         userClr[4] = R.color.purple_200;
         userClr[5] = R.color.teal_700;
-        userClr[6] = R.color.teal_200;
+        userClr[6] = R.color.orange;
         userClr[7] = R.color.black;
         userClr[8] = R.color.teal_200;
         userClr[9] = R.color.jade;
