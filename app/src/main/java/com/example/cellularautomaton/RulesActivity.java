@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,8 @@ public class RulesActivity extends AppCompatActivity {
     private SharedPreferences def_pref;
     LinearLayout ruleBook;
     Button[] rule;
+    TableRow[] trRule;
+
     int clickCounter;
     Intent main;
 
@@ -28,17 +32,24 @@ public class RulesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rules);
         setTitle("Rules");
+        int numberofrules = Integer.valueOf(def_pref.getString("edit_numberofrules","10"));
 
         main = new Intent(RulesActivity.this, MainActivity.class);
+
         ruleBook = findViewById(R.id.ruleBook);
-        rule = new Button[Integer.valueOf(def_pref.getString("edit_numberofrules","10"))];
+        trRule = new TableRow[numberofrules];
+
+        for(int i = 0; i < numberofrules; i++) {
+            trRule[i] = findViewById(R.id.trRule);
+        }
+
         clickCounter = 0;
 
     }
 
     public void newRule(View v) {
-        rule[clickCounter] = new Button(this);
-        ruleBook.addView(rule[clickCounter]);
+        trRule[clickCounter] = new TableRow(this);
+        ruleBook.addView(trRule[clickCounter]);
         clickCounter++;
     }
 

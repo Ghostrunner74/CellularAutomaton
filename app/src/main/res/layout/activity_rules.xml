@@ -22,8 +22,32 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:id="@+id/trRule"
+            android:layout_width="match_parent"
+            android:layout_height="500dp">
+
+            <Button
+                android:id="@+id/prevState"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="----------------->" />
+
+            <Button
+                android:id="@+id/postState"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+        </TableRow>
+    </LinearLayout>
 
     <Button
         android:id="@+id/saveRules"

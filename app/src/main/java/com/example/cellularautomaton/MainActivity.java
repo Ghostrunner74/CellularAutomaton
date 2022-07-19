@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     TableLayout mainTable;
     TableRow tr;
     Button[][] btn;
-    Button button;
     Button clrBtn;
     Intent rules; //
 
