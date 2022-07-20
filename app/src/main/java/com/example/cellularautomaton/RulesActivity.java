@@ -26,7 +26,11 @@ public class RulesActivity extends AppCompatActivity {
 
     Button[] prevState;
     Button[] postState;
+    Button[] inputState;
+    Button[] logicOperator;
+
     TextView support;
+    EditText[] inputNumber;
 
     int clickCounter;
     int buttonSize;
@@ -46,6 +50,9 @@ public class RulesActivity extends AppCompatActivity {
 
         prevState = new Button[numberofrules];
         postState = new Button[numberofrules];
+        logicOperator = new Button[numberofrules];
+        inputNumber = new EditText[numberofrules];
+        inputState = new Button[numberofrules];
 
         buttonSize = 150;
         clickCounter = 0;
@@ -76,7 +83,32 @@ public class RulesActivity extends AppCompatActivity {
         postParams.height = buttonSize;
         postState[clickCounter].setLayoutParams(postParams);
 
+        support = new TextView(this);
+        support.setText(" if ");
+        trRule.addView(support);
+
+        logicOperator[clickCounter] = new Button(this);
+        trRule.addView(logicOperator[clickCounter]);
+
+        LinearLayout.LayoutParams logicParams = (LinearLayout.LayoutParams) logicOperator[clickCounter].getLayoutParams();
+        logicParams.width = buttonSize;
+        logicParams.height = buttonSize;
+        logicOperator[clickCounter].setLayoutParams(logicParams);
+
+        inputNumber[clickCounter] = new EditText(this);
+        trRule.addView(inputNumber[clickCounter]);
+
+        inputState[clickCounter] = new Button(this);
+        trRule.addView(inputState[clickCounter]);
+
+
+        LinearLayout.LayoutParams inputParams = (LinearLayout.LayoutParams) inputState[clickCounter].getLayoutParams();
+        inputParams.width = buttonSize;
+        inputParams.height = buttonSize;
+        postState[clickCounter].setLayoutParams(inputParams);
+
         clickCounter++;
+
     }
 
     public void saveRules(View v) {
