@@ -14,11 +14,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
     static Button[][] btn;
     static Button[][] newBtn;
     Button clrBtn;
-    Intent rules; //
+    Intent rules;
 
-    static int sum; /////////
+    static int[][] blockNewState;
 
 
     int numberOfStates;
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     int blockSize;
     boolean active;
 
-    int[][] newState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         columns = mainTable.getLayoutParams().width/blockSize;
 
         btn = new Button[rows][columns];
-        newBtn = new Button[rows][columns];
+        blockNewState = new int[rows][columns];
     }
 
     public void setRandom(View v) {
@@ -124,6 +122,9 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < rows; i++) {
             tr = new TableRow(this);
             for (int j = 0; j < columns; j++) {
+
+                blockNewState[i][j] = getResources().getColor(Rules.fill(0));
+
                 btn[i][j] = new Button(this);
                 tr.addView(btn[i][j]);
                 btn[i][j].setBackgroundColor(getResources().getColor(Rules.randomFill(numberOfStates)));
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 btn[i][j].setBackgroundColor(getResources().getColor(Rules.fill(0)));
+                blockNewState[i][j] = getResources().getColor(Rules.fill(0));
             }
         }
     }
@@ -167,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
     static public int calculateInputBlocks(int n,int i, int j) { // don't calculate middle square
 
     int inputColor = ((ColorDrawable) RulesActivity.inputState[n].getBackground()).getColor();
+    int sum;
     sum = 0;
 
         for (int li = i - 1; li < i + 2; li++) {
@@ -174,6 +177,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     if (inputColor == ((ColorDrawable) RulesActivity.btn[li][lj].getBackground()).getColor()) {
                         sum++;
+                    }
+                    if (inputColor == ((ColorDrawable) RulesActivity.btn[i][j].getBackground()).getColor()) {
+                        sum--;
                     }
                 }
                 catch (Exception e) {
@@ -186,25 +192,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-        public void chooseOperator() {
+    public void chooseOperator() {
         for (int n = 0; n < RulesActivity.clickCounter; n++) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
-                    int sum = calculateInputBlocks(n,i,j);
+                    int sum = calculateInputBlocks(n,i,j);//
                     switch (String.valueOf(RulesActivity.logicOperator[n].getText())) {
                         // add 2 (or 3) for loops and an array to store new state of table
                         case "<":
-                            if (sum < Integer.valueOf(RulesActivity.inputNumber[n].getText().toString())) { // Integer.valueOf(RulesActivity.logicOperator[n].getText().toString())
-                                btn[i][j].setBackgroundColor(((ColorDrawable) RulesActivity.postState[n].getBackground()).getColor());
+                            if (sum < Integer.valueOf(RulesActivity.inputNumber[n].getText().toString())
+                                    && ((ColorDrawable) RulesActivity.prevState[n].getBackground()).getColor() == ((ColorDrawable) RulesActivity.btn[i][j].getBackground()).getColor()) {
+                                blockNewState[i][j] = ((ColorDrawable) RulesActivity.postState[n].getBackground()).getColor();
                             }
                         break;
                         case ">":
-                            if (sum > Integer.valueOf(RulesActivity.inputNumber[n].getText().toString())) {
-                                btn[i][j].setBackgroundColor(((ColorDrawable) RulesActivity.postState[n].getBackground()).getColor());
+                            if (sum > Integer.valueOf(RulesActivity.inputNumber[n].getText().toString())
+                                    && ((ColorDrawable) RulesActivity.prevState[n].getBackground()).getColor() == ((ColorDrawable) RulesActivity.btn[i][j].getBackground()).getColor()) {
+                                blockNewState[i][j] = ((ColorDrawable) RulesActivity.postState[n].getBackground()).getColor();
                             }
                         break;
-                        default:
-                                btn[i][j].setBackgroundColor(((ColorDrawable) RulesActivity.postState[n].getBackground()).getColor());
+                        case "=":
+                            if (sum == Integer.valueOf(RulesActivity.inputNumber[n].getText().toString())
+                                    && ((ColorDrawable) RulesActivity.prevState[n].getBackground()).getColor() == ((ColorDrawable) RulesActivity.btn[i][j].getBackground()).getColor()) {
+                                blockNewState[i][j] = ((ColorDrawable) RulesActivity.postState[n].getBackground()).getColor();
+                            }
+                        break;
+                        default:  blockNewState[i][j] = ((ColorDrawable) RulesActivity.btn[i][j].getBackground()).getColor();
                         break;
                     }
                 }
@@ -212,10 +225,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void setNewState() {
+        chooseOperator();
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                btn[i][j].setBackgroundColor(blockNewState[i][j]);
+            }
+        }
+    }
+
 
 
     public void newState(View v) {
-        chooseOperator();
+        setNewState();
 
 //        Toast.makeText(this,"i = " + RulesActivity.inputNumber[0].getText().toString(),Toast.LENGTH_SHORT).show();
 //       Toast.makeText(this,"i = " + i,Toast.LENGTH_SHORT).show();

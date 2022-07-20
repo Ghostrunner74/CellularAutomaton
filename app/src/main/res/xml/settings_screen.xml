@@ -23,6 +23,6 @@
             android:key="edit_numberofrules"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Number of Rules" />
+            android:title="Maximum Number of Rules" />
     </PreferenceCategory>
 </PreferenceScreen>
