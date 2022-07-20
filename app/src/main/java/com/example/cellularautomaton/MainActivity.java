@@ -132,12 +132,12 @@ public class MainActivity extends AppCompatActivity {
                 btn[i][j].setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         if ( k[0] < numberOfStates && k[0] != 0) {
-                            btn[finalI][finalJ].setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
+                            v.setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
                             k[0]++; // Tell me why
                         }
                         else {
                             k[0] = 0;
-                            btn[finalI][finalJ].setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
+                            v.setBackgroundColor(getResources().getColor(Rules.fill(k[0]))); //btn[finalI][finalJ].setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
                             k[0]++;
                         }
                     }
