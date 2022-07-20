@@ -28,8 +28,6 @@ public class Rules extends MainActivity{
     }
 
 
-
-
     public static int randomFill(int i) {
             return allStates(rng.nextInt(i));
     }
@@ -37,6 +35,7 @@ public class Rules extends MainActivity{
     public static int fill(int i) {
         return allStates(i);
     }
+
 }
 
 

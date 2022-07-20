@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,23 +19,23 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class RulesActivity extends AppCompatActivity {
+public class RulesActivity extends Rules {
 
     private SharedPreferences def_pref;
     TableLayout ruleBook;
     TableRow trRule;
 
-    Button[] prevState;
-    Button[] postState;
-    Button[] inputState;
-    Button[] logicOperator;
+    public static Button[] prevState;
+    public static Button[] postState;
+    public static Button[] inputState;
+    public static Button[] logicOperator;
 
-    String[] logicOperatorValue;
+    public static String[] logicOperatorValue;
 
     TextView support;
-    EditText[] inputNumber;
+    public static EditText[] inputNumber;
 
-    int clickCounter;
+    public static int clickCounter;
     int buttonSize;
     int numberOfStates;
     Intent main;
@@ -131,8 +132,6 @@ public class RulesActivity extends AppCompatActivity {
         logicOperator[clickCounter].setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                int clickCounter = RulesActivity.this.clickCounter;
-
                 Button button = (Button) v;
 
                 if ( l[0] < logicOperatorValue.length && l[0] != 0) {
@@ -178,11 +177,15 @@ public class RulesActivity extends AppCompatActivity {
         inputParams.height = buttonSize;
         postState[clickCounter].setLayoutParams(inputParams);
 
+        trRule.setGravity(Gravity.CENTER);
+
         clickCounter++;
 
     }
 
     public void saveRules(View v) {
+        main.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(main);
     }
+
 }

@@ -48,4 +48,15 @@
         android:onClick="clearMainTable"
         android:text="Clear" />
 
+    <Button
+        android:id="@+id/newState"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clear"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:onClick="newState"
+        android:text="NewState" />
+
 </RelativeLayout>

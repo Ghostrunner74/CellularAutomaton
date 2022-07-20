@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
@@ -25,18 +26,21 @@ public class MainActivity extends AppCompatActivity {
 
     TableLayout mainTable;
     TableRow tr;
-    Button[][] btn;
+    static Button[][] btn;
+    static Button[][] newBtn;
     Button clrBtn;
     Intent rules; //
 
-    EditText editNumberOfStates;
-    EditText editBlockSize;
+    static int sum; /////////
+
 
     int numberOfStates;
     int rows;
     int columns;
     int blockSize;
     boolean active;
+
+    int[][] newState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-
     }
 
     public void init() {
@@ -61,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
         mainTable = (TableLayout) findViewById(R.id.mainTable);
 
-        blockSize =  Integer.valueOf(def_pref.getString("edit_blocksize","100"));
-        numberOfStates = Integer. valueOf(def_pref.getString("edit_numberofstates","2"));
+        blockSize =  Integer.parseInt(def_pref.getString("edit_blocksize","100"));
+        numberOfStates = Integer.parseInt(def_pref.getString("edit_numberofstates","2"));
 
         active = false;
     }
@@ -79,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.menu_settings) {
-//            Toast.makeText(this,"Home menu clicked",Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
             startActivity(intent);
         }
@@ -93,13 +95,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reference() {
-        blockSize =  Integer.valueOf(def_pref.getString("edit_blocksize","100"));
-        numberOfStates = Integer. valueOf(def_pref.getString("edit_numberofstates","2"));
+        blockSize =  Integer.parseInt(def_pref.getString("edit_blocksize","100"));
+        numberOfStates = Integer.parseInt(def_pref.getString("edit_numberofstates","2"));
 
         rows = mainTable.getLayoutParams().height/blockSize;
         columns = mainTable.getLayoutParams().width/blockSize;
 
         btn = new Button[rows][columns];
+        newBtn = new Button[rows][columns];
     }
 
     public void setRandom(View v) {
@@ -107,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearMainTable(View v) {
-
         clearMainTable();
     }
 
@@ -126,22 +128,19 @@ public class MainActivity extends AppCompatActivity {
                 tr.addView(btn[i][j]);
                 btn[i][j].setBackgroundColor(getResources().getColor(Rules.randomFill(numberOfStates)));
 
-                int finalI = i;
-                int finalJ = j;
                 final int[] k = {0};
-                btn[i][j].setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        if ( k[0] < numberOfStates && k[0] != 0) {
-                            v.setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
-                            k[0]++; // Tell me why
-                        }
-                        else {
-                            k[0] = 0;
-                            v.setBackgroundColor(getResources().getColor(Rules.fill(k[0]))); //btn[finalI][finalJ].setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
-                            k[0]++;
-                        }
-                    }
-                });
+                btn[i][j].setOnClickListener(
+                        v -> {
+                            if ( k[0] < numberOfStates && k[0] != 0) {
+                                v.setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
+                                k[0]++; // Tell me why
+                            }
+                            else {
+                                k[0] = 0;
+                                v.setBackgroundColor(getResources().getColor(Rules.fill(k[0]))); //btn[finalI][finalJ].setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
+                                k[0]++;
+                            }
+                        });
 
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) btn[i][j].getLayoutParams();
                 params.width = blockSize;
@@ -162,6 +161,64 @@ public class MainActivity extends AppCompatActivity {
                 btn[i][j].setBackgroundColor(getResources().getColor(Rules.fill(0)));
             }
         }
+    }
+
+
+    static public int calculateInputBlocks(int n,int i, int j) { // don't calculate middle square
+
+    int inputColor = ((ColorDrawable) RulesActivity.inputState[n].getBackground()).getColor();
+    sum = 0;
+
+        for (int li = i - 1; li < i + 2; li++) {
+            for (int lj = j - 1; lj < j + 2; lj++ ) {
+                try {
+                    if (inputColor == ((ColorDrawable) RulesActivity.btn[li][lj].getBackground()).getColor()) {
+                        sum++;
+                    }
+                }
+                catch (Exception e) {
+                    sum += 0;
+                }
+            }
+        }
+
+        return sum;
+
+    }
+
+        public void chooseOperator() {
+        for (int n = 0; n < RulesActivity.clickCounter; n++) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    int sum = calculateInputBlocks(n,i,j);
+                    switch (String.valueOf(RulesActivity.logicOperator[n].getText())) {
+                        // add 2 (or 3) for loops and an array to store new state of table
+                        case "<":
+                            if (sum < Integer.valueOf(RulesActivity.inputNumber[n].getText().toString())) { // Integer.valueOf(RulesActivity.logicOperator[n].getText().toString())
+                                btn[i][j].setBackgroundColor(((ColorDrawable) RulesActivity.postState[n].getBackground()).getColor());
+                            }
+                        break;
+                        case ">":
+                            if (sum > Integer.valueOf(RulesActivity.inputNumber[n].getText().toString())) {
+                                btn[i][j].setBackgroundColor(((ColorDrawable) RulesActivity.postState[n].getBackground()).getColor());
+                            }
+                        break;
+                        default:
+                                btn[i][j].setBackgroundColor(((ColorDrawable) RulesActivity.postState[n].getBackground()).getColor());
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    public void newState(View v) {
+        chooseOperator();
+
+//        Toast.makeText(this,"i = " + RulesActivity.inputNumber[0].getText().toString(),Toast.LENGTH_SHORT).show();
+//       Toast.makeText(this,"i = " + i,Toast.LENGTH_SHORT).show();
     }
 
 }
