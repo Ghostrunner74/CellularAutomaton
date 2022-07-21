@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.Menu;
@@ -18,26 +19,32 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences def_pref;
 
     TableLayout mainTable;
     TableRow tr;
+
     static Button[][] btn;
-    static Button[][] newBtn;
     Button clrBtn;
+    Button startBtn;
+
     Intent rules;
 
     static int[][] blockNewState;
-
 
     int numberOfStates;
     int rows;
     int columns;
     int blockSize;
     boolean active;
+    boolean btnState;
 
+
+    private Handler handler = new Handler();
 
 
     @Override
@@ -57,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
         clrBtn = new Button(this);
 
+        startBtn = findViewById(R.id.start);
+        startBtn.setEnabled(false);
+
         clrBtn = findViewById(R.id.clear);
         clrBtn.setEnabled(false);
 
@@ -66,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         numberOfStates = Integer.parseInt(def_pref.getString("edit_numberofstates","2"));
 
         active = false;
+        btnState = false;
     }
 
     @Override
@@ -153,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             tr.setGravity(Gravity.CENTER);
         }
         clrBtn.setEnabled(true);
+        startBtn.setEnabled(true);
     }
 
     private void clearMainTable() {
@@ -246,6 +258,28 @@ public class MainActivity extends AppCompatActivity {
 
 //        Toast.makeText(this,"i = " + RulesActivity.inputNumber[0].getText().toString(),Toast.LENGTH_SHORT).show();
 //       Toast.makeText(this,"i = " + i,Toast.LENGTH_SHORT).show();
+    }
+
+    private Runnable newStateRunnable = new Runnable(){
+        @Override
+        public void run() {
+            chooseOperator();
+            handler.postDelayed(newStateRunnable,1000);
+        }
+    };
+
+    public void startGame(View v) { // add thread
+
+        if (btnState == false) {
+            startBtn.setText("Stop");
+            newStateRunnable.run();
+        }
+        else {
+            startBtn.setText("Start");
+            handler.removeCallbacks(newStateRunnable);
+        }
+
+        btnState = !btnState;
     }
 
 }
