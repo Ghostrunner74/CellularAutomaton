@@ -166,21 +166,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    static public int calculateInputBlocks(int n,int i, int j) { // don't calculate middle square
+    public int calculateInputBlocks(int n,int i, int j) { // don't calculate middle square
 
-    int inputColor = ((ColorDrawable) RulesActivity.inputState[n].getBackground()).getColor();
     int sum;
     sum = 0;
+
+        if (((ColorDrawable) RulesActivity.inputState[n].getBackground()).getColor()
+                == ((ColorDrawable) RulesActivity.btn[i][j].getBackground()).getColor()) {
+            sum--;
+        }
 
         for (int li = i - 1; li < i + 2; li++) {
             for (int lj = j - 1; lj < j + 2; lj++ ) {
                 try {
-                    if (inputColor == ((ColorDrawable) RulesActivity.btn[li][lj].getBackground()).getColor()) {
+                    if (((ColorDrawable) RulesActivity.inputState[n].getBackground()).getColor()
+                            == ((ColorDrawable) RulesActivity.btn[li][lj].getBackground()).getColor()) {
                         sum++;
                     }
-                    if (inputColor == ((ColorDrawable) RulesActivity.btn[i][j].getBackground()).getColor()) {
-                        sum--;
-                    }
+
                 }
                 catch (Exception e) {
                     sum += 0;
@@ -192,12 +195,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void chooseOperator() {
-        for (int n = 0; n < RulesActivity.clickCounter; n++) {
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
+    public void chooseOperator() { //How automaton threat unknown cells?
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                blockNewState[i][j] = ((ColorDrawable) RulesActivity.btn[i][j].getBackground()).getColor();
+            }
+        }
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            for (int n = 0; n < RulesActivity.clickCounter; n++) {
                     int sum = calculateInputBlocks(n,i,j);//
-                    switch (String.valueOf(RulesActivity.logicOperator[n].getText())) {
+                    switch (String.valueOf(RulesActivity.logicOperator[n].getText()).trim()) {
                         // add 2 (or 3) for loops and an array to store new state of table
                         case "<":
                             if (sum < Integer.valueOf(RulesActivity.inputNumber[n].getText().toString())
@@ -217,16 +227,11 @@ public class MainActivity extends AppCompatActivity {
                                 blockNewState[i][j] = ((ColorDrawable) RulesActivity.postState[n].getBackground()).getColor();
                             }
                         break;
-                        default:  blockNewState[i][j] = ((ColorDrawable) RulesActivity.btn[i][j].getBackground()).getColor();
-                        break;
+                        default: break;
                     }
                 }
             }
         }
-    }
-
-    public void setNewState() {
-        chooseOperator();
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -236,9 +241,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     public void newState(View v) {
-        setNewState();
+        chooseOperator();
 
 //        Toast.makeText(this,"i = " + RulesActivity.inputNumber[0].getText().toString(),Toast.LENGTH_SHORT).show();
 //       Toast.makeText(this,"i = " + i,Toast.LENGTH_SHORT).show();
