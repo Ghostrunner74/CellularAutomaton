@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,12 +24,13 @@ public class RulesActivity extends Rules {
 
     private SharedPreferences def_pref;
     TableLayout ruleBook;
-    TableRow trRule;
+    TableRow[] trRule;
 
     public static Button[] prevState;
     public static Button[] postState;
     public static Button[] inputState;
     public static Button[] logicOperator;
+    public static Button deleteRule;
 
     public static String[] logicOperatorValue;
 
@@ -38,6 +40,7 @@ public class RulesActivity extends Rules {
     public static int clickCounter;
     int buttonSize;
     int numberOfStates;
+    int numberofrules;
     Intent main;
 
     @Override
@@ -51,7 +54,10 @@ public class RulesActivity extends Rules {
 
         ruleBook = findViewById(R.id.ruleBook);
 
-        int numberofrules = Integer.valueOf(def_pref.getString("edit_numberofrules","10"));
+        deleteRule = findViewById(R.id.deleteButton);
+        deleteRule.setEnabled(false);
+
+        numberofrules = Integer.valueOf(def_pref.getString("edit_numberofrules","10"));
         numberOfStates = Integer. valueOf(def_pref.getString("edit_numberofstates","2"));
         logicOperatorValue = new String[]{"=", "<", ">"};
 
@@ -62,125 +68,140 @@ public class RulesActivity extends Rules {
         inputNumber = new EditText[numberofrules];
         inputState = new Button[numberofrules];
 
+        trRule = new TableRow[numberofrules];
+
         buttonSize = 150;
         clickCounter = 0;
 
     }
 
+    private void setButtonSize(Button button) {
+        LinearLayout.LayoutParams btnParams = (LinearLayout.LayoutParams) button.getLayoutParams();
+        btnParams.width = buttonSize;
+        btnParams.height = buttonSize;
+        button.setLayoutParams(btnParams);
+    }
+
     public void newRule(View v) {
-        trRule = new TableRow(this);
-        ruleBook.addView(trRule);
 
-        prevState[clickCounter] = new Button(this);
-        trRule.addView(prevState[clickCounter]);
+        if (clickCounter < numberofrules) {
 
-        final int[] i = {0};
-        prevState[clickCounter].setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if ( i[0] < numberOfStates && i[0] != 0) {
-                    v.setBackgroundColor(getResources().getColor(Rules.fill(i[0])));
-                    i[0]++; // Tell me why
+            trRule[clickCounter] = new TableRow(this);
+            ruleBook.addView(trRule[clickCounter]);
+
+            prevState[clickCounter] = new Button(this);
+            trRule[clickCounter].addView(prevState[clickCounter]);
+
+            final int[] i = {0};
+            prevState[clickCounter].setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (i[0] < numberOfStates && i[0] != 0) {
+                        v.setBackgroundColor(getResources().getColor(Rules.fill(i[0])));
+                        i[0]++; // Tell me why
+                    } else {
+                        i[0] = 0;
+                        v.setBackgroundColor(getResources().getColor(Rules.fill(i[0])));
+                        i[0]++;
+                    }
                 }
-                else {
-                    i[0] = 0;
-                    v.setBackgroundColor(getResources().getColor(Rules.fill(i[0])));
-                    i[0]++;
+            });
+
+            setButtonSize(prevState[clickCounter]);
+
+            support = new TextView(this);
+            support.setText(" ----------------> ");
+            trRule[clickCounter].addView(support);
+
+            postState[clickCounter] = new Button(this);
+            trRule[clickCounter].addView(postState[clickCounter]);
+
+            final int[] j = {0};
+            postState[clickCounter].setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (j[0] < numberOfStates && j[0] != 0) {
+                        v.setBackgroundColor(getResources().getColor(Rules.fill(j[0])));
+                        j[0]++; // Tell me why
+                    } else {
+                        j[0] = 0;
+                        v.setBackgroundColor(getResources().getColor(Rules.fill(j[0])));
+                        j[0]++;
+                    }
                 }
-            }
-        });
+            });
 
-        LinearLayout.LayoutParams prevParams = (LinearLayout.LayoutParams) prevState[clickCounter].getLayoutParams();
-        prevParams.width = buttonSize;
-        prevParams.height = buttonSize;
-        prevState[clickCounter].setLayoutParams(prevParams);
+            setButtonSize(postState[clickCounter]);
 
-        support = new TextView(this);
-        support.setText(" ----------------> ");
-        trRule.addView(support);
+            support = new TextView(this);
+            support.setText(" if ");
+            trRule[clickCounter].addView(support);
 
-        postState[clickCounter] = new Button(this);
-        trRule.addView(postState[clickCounter]);
+            logicOperator[clickCounter] = new Button(this);
+            trRule[clickCounter].addView(logicOperator[clickCounter]);
 
-        final int[] j = {0};
-        postState[clickCounter].setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if ( j[0] < numberOfStates && j[0] != 0) {
-                    v.setBackgroundColor(getResources().getColor(Rules.fill(j[0])));
-                    j[0]++; // Tell me why
+            final int[] l = {0};
+            logicOperator[clickCounter].setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    Button button = (Button) v;
+
+                    if (l[0] < logicOperatorValue.length && l[0] != 0) {
+                        button.setText(logicOperatorValue[l[0]]);
+                        l[0]++; // Tell me why
+                    } else {
+                        l[0] = 0;
+                        button.setText(logicOperatorValue[l[0]]);
+                        l[0]++;
+                    }
                 }
-                else {
-                    j[0] = 0;
-                    v.setBackgroundColor(getResources().getColor(Rules.fill(j[0])));
-                    j[0]++;
+            });
+
+            setButtonSize(logicOperator[clickCounter]);
+
+            inputNumber[clickCounter] = new EditText(this);
+            trRule[clickCounter].addView(inputNumber[clickCounter]);
+
+            inputState[clickCounter] = new Button(this);
+            trRule[clickCounter].addView(inputState[clickCounter]);
+
+            final int[] k = {0};
+            inputState[clickCounter].setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (k[0] < numberOfStates && k[0] != 0) {
+                        v.setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
+                        k[0]++; //
+                    } else {
+                        k[0] = 0;
+                        v.setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
+                        k[0]++;
+                    }
                 }
-            }
-        });
+            });
 
-        LinearLayout.LayoutParams postParams = (LinearLayout.LayoutParams) postState[clickCounter].getLayoutParams();
-        postParams.width = buttonSize;
-        postParams.height = buttonSize;
-        postState[clickCounter].setLayoutParams(postParams);
+            setButtonSize(inputState[clickCounter]);
 
-        support = new TextView(this);
-        support.setText(" if ");
-        trRule.addView(support);
+            trRule[clickCounter].setGravity(Gravity.CENTER);
 
-        logicOperator[clickCounter] = new Button(this);
-        trRule.addView(logicOperator[clickCounter]);
+            deleteRule.setEnabled(true);
 
-        final int[] l = {0};
-        logicOperator[clickCounter].setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            clickCounter++;
 
-                Button button = (Button) v;
+        }
+        else {
+            Toast.makeText(this,"Maximum number of rules has been reached",Toast.LENGTH_SHORT).show();
+        }
 
-                if ( l[0] < logicOperatorValue.length && l[0] != 0) {
-                    button.setText(logicOperatorValue[l[0]]);
-                    l[0]++; // Tell me why
-                }
-                else {
-                    l[0] = 0;
-                    button.setText(logicOperatorValue[l[0]]);
-                    l[0]++;
-                }
-            }
-        });
+    }
 
-        LinearLayout.LayoutParams logicParams = (LinearLayout.LayoutParams) logicOperator[clickCounter].getLayoutParams();
-        logicParams.width = buttonSize;
-        logicParams.height = buttonSize;
-        logicOperator[clickCounter].setLayoutParams(logicParams);
+    public void  deleteRule(View v) {
+        clickCounter--;
+        ruleBook.removeView(trRule[clickCounter]);
 
-        inputNumber[clickCounter] = new EditText(this);
-        trRule.addView(inputNumber[clickCounter]);
-
-        inputState[clickCounter] = new Button(this);
-        trRule.addView(inputState[clickCounter]);
-
-        final int[] k = {0};
-        inputState[clickCounter].setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if ( k[0] < numberOfStates && k[0] != 0) {
-                    v.setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
-                    k[0]++; //
-                }
-                else {
-                    k[0] = 0;
-                    v.setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
-                    k[0]++;
-                }
-            }
-        });
-
-        LinearLayout.LayoutParams inputParams = (LinearLayout.LayoutParams) inputState[clickCounter].getLayoutParams();
-        inputParams.width = buttonSize;
-        inputParams.height = buttonSize;
-        postState[clickCounter].setLayoutParams(inputParams);
-
-        trRule.setGravity(Gravity.CENTER);
-
-        clickCounter++;
-
+        if (clickCounter == 0) {
+            deleteRule.setEnabled(false);
+        }
+        else {
+            deleteRule.setEnabled(true);
+        }
     }
 
     public void saveRules(View v) {
