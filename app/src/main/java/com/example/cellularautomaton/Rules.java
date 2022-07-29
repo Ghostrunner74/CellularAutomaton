@@ -1,6 +1,7 @@
 package com.example.cellularautomaton;
 
 import android.graphics.Color;
+import android.view.View;
 import android.widget.Button;
 
 import java.util.Random;

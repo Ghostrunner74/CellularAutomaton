@@ -11,8 +11,8 @@
 
     <TableLayout
         android:id="@+id/mainTable"
-        android:layout_width="410dp"
-        android:layout_height="410dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:clipToPadding="false"
         android:divider="@drawable/ic_launcher_background"

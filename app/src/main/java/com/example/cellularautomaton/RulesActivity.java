@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class RulesActivity extends Rules {
+public class RulesActivity extends MainActivity {
 
     private SharedPreferences def_pref;
     TableLayout ruleBook;
@@ -81,6 +81,7 @@ public class RulesActivity extends Rules {
         btnParams.height = buttonSize;
         button.setLayoutParams(btnParams);
     }
+
 
     public void newRule(View v) {
 

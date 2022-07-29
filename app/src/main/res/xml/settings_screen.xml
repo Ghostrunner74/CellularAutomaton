@@ -7,22 +7,34 @@
         android:title="Game Settings">
 
         <EditTextPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
+            android:key="edit_neighbordistance"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Neighborhood distance" />
+        <EditTextPreference
+            android:defaultValue="true"
             android:key="edit_blocksize"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Block Size" />
         <EditTextPreference
-            android:defaultValue="Default value"
+            android:defaultValue="true"
             android:key="edit_numberofstates"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Number of States" />
         <EditTextPreference
-            android:defaultValue="Default value"
+            android:defaultValue="true"
             android:key="edit_numberofrules"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Maximum Number of Rules" />
+        <EditTextPreference
+            android:defaultValue="true"
+            android:key="edit_delaytime"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Delay" />
     </PreferenceCategory>
 </PreferenceScreen>

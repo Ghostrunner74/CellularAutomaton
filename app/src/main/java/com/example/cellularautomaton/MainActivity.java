@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,10 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,15 +32,19 @@ public class MainActivity extends AppCompatActivity {
     static Button[][] btn;
     Button clrBtn;
     Button startBtn;
+    Button newStateBtn;
 
     Intent rules;
 
     static int[][] blockNewState;
 
     int numberOfStates;
+    int neighborDistance;
     int rows;
     int columns;
     int blockSize;
+    int delay;
+
     boolean active;
     boolean btnState;
 
@@ -59,10 +64,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void init() {
 
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+
         def_pref = PreferenceManager.getDefaultSharedPreferences(this);
         rules = new Intent(MainActivity.this,RulesActivity.class);
 
         clrBtn = new Button(this);
+
+        newStateBtn = findViewById(R.id.newState);
+        newStateBtn.setEnabled(false);
 
         startBtn = findViewById(R.id.start);
         startBtn.setEnabled(false);
@@ -71,9 +84,10 @@ public class MainActivity extends AppCompatActivity {
         clrBtn.setEnabled(false);
 
         mainTable = (TableLayout) findViewById(R.id.mainTable);
-
-        blockSize =  Integer.parseInt(def_pref.getString("edit_blocksize","100"));
-        numberOfStates = Integer.parseInt(def_pref.getString("edit_numberofstates","2"));
+        RelativeLayout.LayoutParams tableParams = (RelativeLayout.LayoutParams)  mainTable.getLayoutParams();
+        tableParams.width = width;
+        tableParams.height = width;
+        mainTable.setLayoutParams(tableParams);
 
         active = false;
         btnState = false;
@@ -106,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
     public void reference() {
         blockSize =  Integer.parseInt(def_pref.getString("edit_blocksize","100"));
         numberOfStates = Integer.parseInt(def_pref.getString("edit_numberofstates","2"));
+        delay = Integer.parseInt(def_pref.getString("edit_delaytime","1000"));
+        neighborDistance = Integer.parseInt(def_pref.getString("edit_neighbordistance","1"));;
 
         rows = mainTable.getLayoutParams().height/blockSize;
         columns = mainTable.getLayoutParams().width/blockSize;
@@ -149,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else {
                                 k[0] = 0;
-                                v.setBackgroundColor(getResources().getColor(Rules.fill(k[0]))); //btn[finalI][finalJ].setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
+                                v.setBackgroundColor(getResources().getColor(Rules.fill(k[0])));
                                 k[0]++;
                             }
                         });
@@ -165,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         }
         clrBtn.setEnabled(true);
         startBtn.setEnabled(true);
+        newStateBtn.setEnabled(true);
     }
 
     private void clearMainTable() {
@@ -188,8 +205,8 @@ public class MainActivity extends AppCompatActivity {
             sum--;
         }
 
-        for (int li = i - 1; li < i + 2; li++) {
-            for (int lj = j - 1; lj < j + 2; lj++ ) {
+        for (int li = i - neighborDistance; li <= i + neighborDistance; li++) {
+            for (int lj = j - neighborDistance; lj <= j + neighborDistance; lj++ ) {
                 try {
                     if (((ColorDrawable) RulesActivity.inputState[n].getBackground()).getColor()
                             == ((ColorDrawable) RulesActivity.btn[li][lj].getBackground()).getColor()) {
@@ -264,13 +281,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             chooseOperator();
-            handler.postDelayed(newStateRunnable,1000);
+            handler.postDelayed(newStateRunnable,delay);
         }
     };
 
     public void startGame(View v) { // add thread
 
-        if (btnState == false) {
+        if (!btnState) {
             startBtn.setText("Stop");
             newStateRunnable.run();
         }
